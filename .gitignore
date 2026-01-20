@@ -21,4 +21,5 @@ ENV/
 .DS_Store
 Thumbs.db
 
-./documents/*
+# ドキュメント（Git に含めない）
+documents/
