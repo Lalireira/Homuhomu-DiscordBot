@@ -1,31 +1,54 @@
-name: Deploy to Railway
+name: Deploy Discord Bot to ECS
 
 on:
   push:
     branches:
       - main
-      - master
-  workflow_dispatch:  # 手動実行も可能
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  AWS_REGION: ap-northeast-1
+  ECR_REPOSITORY: homuhomu-discord-bot
+  ECS_CLUSTER: homuhomu-discord-bot-cluster
+  ECS_SERVICE: homuhomu-discord-bot-service
+  CONTAINER_NAME: Homuhomu-discord-bot
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    
+
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-    
-    - name: Deploy to Railway
-      run: |
-        echo "Railway will automatically deploy on git push"
-        echo "This workflow is for validation only"
-    
-    - name: Validate Dockerfile
-      run: |
-        docker build -t homuhomu-discordbot:test .
-    
-    - name: Validate docker-compose
-      run: |
-        docker-compose config
+      - name: Checkout
+        uses: actions/checkout@v4
 
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::587821825996:role/GitHubActionsEcsDeployRole
+          aws-region: ${{ env.AWS_REGION }}
 
+      - name: Login to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build Docker image
+        run: |
+          docker build -t $ECR_REPOSITORY:latest .
+
+      - name: Tag Docker image
+        run: |
+          docker tag $ECR_REPOSITORY:latest \
+            587821825996.dkr.ecr.${AWS_REGION}.amazonaws.com/$ECR_REPOSITORY:latest
+
+      - name: Push Docker image
+        run: |
+          docker push 587821825996.dkr.ecr.${AWS_REGION}.amazonaws.com/$ECR_REPOSITORY:latest
+
+      - name: Deploy ECS Service
+        run: |
+          aws ecs update-service \
+            --cluster $ECS_CLUSTER \
+            --service $ECS_SERVICE \
+            --force-new-deployment
