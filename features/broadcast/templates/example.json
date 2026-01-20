@@ -1,0 +1,5 @@
+{
+  "name": "サンプルテンプレート",
+  "description": "変数を使用したサンプルテンプレート",
+  "message": "こんにちは、{username}さん！\n\n本日は{date}です。\n\n{content}\n\nよろしくお願いいたします。"
+}

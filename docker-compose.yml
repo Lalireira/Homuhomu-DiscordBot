@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  bot:
+    build: .
+    container_name: homuhomu-discordbot
+    env_file:
+      - .env
+    restart: unless-stopped
+    # ログをホストで確認したい場合は以下をアンコメント
+    # volumes:
+    #   - ./logs:/app/logs
+

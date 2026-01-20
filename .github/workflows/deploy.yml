@@ -1,0 +1,31 @@
+name: Deploy to Railway
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  workflow_dispatch:  # 手動実行も可能
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Deploy to Railway
+      run: |
+        echo "Railway will automatically deploy on git push"
+        echo "This workflow is for validation only"
+    
+    - name: Validate Dockerfile
+      run: |
+        docker build -t homuhomu-discordbot:test .
+    
+    - name: Validate docker-compose
+      run: |
+        docker-compose config
+
+

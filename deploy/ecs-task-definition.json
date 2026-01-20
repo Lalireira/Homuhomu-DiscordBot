@@ -1,0 +1,61 @@
+{
+  "family": "homuhomu-bot-task",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "256",
+  "memory": "512",
+  "executionRoleArn": "arn:aws:iam::123456789012:role/ecsTaskExecutionRole",
+  "containerDefinitions": [
+    {
+      "name": "homuhomu-bot",
+      "image": "123456789012.dkr.ecr.ap-northeast-1.amazonaws.com/homuhomu-discordbot:latest",
+      "essential": true,
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-create-group": "true",
+          "awslogs-group": "/ecs/homuhomu-bot",
+          "awslogs-region": "ap-northeast-1",
+          "awslogs-stream-prefix": "ecs"
+        }
+      },
+      "environment": [],
+      "secrets": [
+        {
+          "name": "DISCORD_BOT_TOKEN",
+          "valueFrom": "arn:aws:secretsmanager:ap-northeast-1:123456789012:secret:homuhomu-bot/discord-token"
+        },
+        {
+          "name": "OSU_CLIENT_ID",
+          "valueFrom": "arn:aws:secretsmanager:ap-northeast-1:123456789012:secret:homuhomu-bot/osu-client-id"
+        },
+        {
+          "name": "OSU_CLIENT_SECRET",
+          "valueFrom": "arn:aws:secretsmanager:ap-northeast-1:123456789012:secret:homuhomu-bot/osu-client-secret"
+        },
+        {
+          "name": "TWITCH_CLIENT_ID",
+          "valueFrom": "arn:aws:secretsmanager:ap-northeast-1:123456789012:secret:homuhomu-bot/twitch-client-id"
+        },
+        {
+          "name": "TWITCH_CLIENT_SECRET",
+          "valueFrom": "arn:aws:secretsmanager:ap-northeast-1:123456789012:secret:homuhomu-bot/twitch-client-secret"
+        },
+        {
+          "name": "TWITCH_CHANNEL_NAME",
+          "valueFrom": "arn:aws:secretsmanager:ap-northeast-1:123456789012:secret:homuhomu-bot/twitch-channel-name"
+        },
+        {
+          "name": "TWITCH_NOTIFICATION_CHANNEL_ID",
+          "valueFrom": "arn:aws:secretsmanager:ap-northeast-1:123456789012:secret:homuhomu-bot/twitch-notification-channel-id"
+        },
+        {
+          "name": "NOTIFICATION_ROLE_ID",
+          "valueFrom": "arn:aws:secretsmanager:ap-northeast-1:123456789012:secret:homuhomu-bot/notification-role-id"
+        }
+      ]
+    }
+  ]
+}
+
+
