@@ -29,6 +29,10 @@
             "valueFrom": "arn:aws:secretsmanager:ap-northeast-1:587821825996:secret:discord/homuhomu/bot-token-nLbMk5:TWITCH_CLIENT_ID::"
           },
           {
+            "name": "TWITCH_CLIENT_SECRET",
+            "valueFrom": "arn:aws:secretsmanager:ap-northeast-1:587821825996:secret:discord/homuhomu/bot-token-nLbMk5:TWITCH_CLIENT_SECRET::"
+          },
+          {
             "name": "TWITCH_DISCORD_CHANNEL_ID",
             "valueFrom": "arn:aws:secretsmanager:ap-northeast-1:587821825996:secret:discord/homuhomu/bot-token-nLbMk5:TWITCH_DISCORD_CHANNEL_ID::"
           },
