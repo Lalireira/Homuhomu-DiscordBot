@@ -10,6 +10,46 @@
         "name": "Homuhomu-discord-bot",
         "image": "587821825996.dkr.ecr.ap-northeast-1.amazonaws.com/homuhomu-discord-bot:latest",
         "essential": true,
+  
+        "secrets": [
+          {
+            "name": "DISCORD_BOT_TOKEN",
+            "valueFrom": "arn:aws:secretsmanager:ap-northeast-1:587821825996:secret:discord/homuhomu/bot-token-nLbMk5:DISCORD_BOT_TOKEN::"
+          },
+          {
+            "name": "OSU_CLIENT_ID",
+            "valueFrom": "arn:aws:secretsmanager:ap-northeast-1:587821825996:secret:discord/homuhomu/bot-token-nLbMk5:OSU_CLIENT_ID::"
+          },
+          {
+            "name": "OSU_CLIENT_SECRET",
+            "valueFrom": "arn:aws:secretsmanager:ap-northeast-1:587821825996:secret:discord/homuhomu/bot-token-nLbMk5:OSU_CLIENT_SECRET::"
+          },
+          {
+            "name": "TWITCH_CLIENT_ID",
+            "valueFrom": "arn:aws:secretsmanager:ap-northeast-1:587821825996:secret:discord/homuhomu/bot-token-nLbMk5:TWITCH_CLIENT_ID::"
+          },
+          {
+            "name": "TWITCH_DISCORD_CHANNEL_ID",
+            "valueFrom": "arn:aws:secretsmanager:ap-northeast-1:587821825996:secret:discord/homuhomu/bot-token-nLbMk5:TWITCH_DISCORD_CHANNEL_ID::"
+          },
+          {
+            "name": "TWITCH_USERNAMES",
+            "valueFrom": "arn:aws:secretsmanager:ap-northeast-1:587821825996:secret:discord/homuhomu/bot-token-nLbMk5:TWITCH_USERNAMES::"
+          },
+          {
+            "name": "TWITCH_CHECK_INTERVAL",
+            "valueFrom": "arn:aws:secretsmanager:ap-northeast-1:587821825996:secret:discord/homuhomu/bot-token-nLbMk5:TWITCH_CHECK_INTERVAL::"
+          },
+          {
+            "name": "NOTIFICATION_ROLE_ID",
+            "valueFrom": "arn:aws:secretsmanager:ap-northeast-1:587821825996:secret:discord/homuhomu/bot-token-nLbMk5:NOTIFICATION_ROLE_ID::"
+          },
+          {
+            "name": "BROADCAST_ALLOWED_USER_IDS",
+            "valueFrom": "arn:aws:secretsmanager:ap-northeast-1:587821825996:secret:discord/homuhomu/bot-token-nLbMk5:BROADCAST_ALLOWED_USER_IDS::"
+          }
+        ],
+  
         "logConfiguration": {
           "logDriver": "awslogs",
           "options": {
@@ -21,3 +61,4 @@
       }
     ]
   }
+  
