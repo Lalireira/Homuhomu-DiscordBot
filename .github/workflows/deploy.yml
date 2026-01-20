@@ -2,53 +2,54 @@ name: Deploy Discord Bot to ECS
 
 on:
   push:
-    branches:
-      - main
+    branches: [ "main" ]
 
 permissions:
   id-token: write
   contents: read
 
-env:
-  AWS_REGION: ap-northeast-1
-  ECR_REPOSITORY: homuhomu-discord-bot
-  ECS_CLUSTER: homuhomu-discord-bot-cluster
-  ECS_SERVICE: homuhomu-discord-bot-service
-  CONTAINER_NAME: Homuhomu-discord-bot
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
+    env:
+      AWS_REGION: ap-northeast-1
+      ECR_REPOSITORY: homuhomu-discord-bot
+      ECS_CLUSTER: homuhomu-discord-bot-cluster
+      ECS_SERVICE: homuhomu-discord-bot-service
+      CONTAINER_NAME: Homuhomu-discord-bot
+
     steps:
-      - name: Checkout
+      - name: Checkout source
         uses: actions/checkout@v4
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::587821825996:role/GitHubActionsEcsDeployRole
+          role-to-assume: arn:aws:iam::587821825996:role/GitHubActionsDeployRole
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Login to Amazon ECR
         uses: aws-actions/amazon-ecr-login@v2
 
-      - name: Build Docker image
+      - name: Build and push Docker image (SHA tag)
         run: |
-          docker build -t $ECR_REPOSITORY:latest .
+          IMAGE_URI=587821825996.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPOSITORY}:${GITHUB_SHA}
+          docker build -t ${IMAGE_URI} .
+          docker push ${IMAGE_URI}
 
-      - name: Tag Docker image
-        run: |
-          docker tag $ECR_REPOSITORY:latest \
-            587821825996.dkr.ecr.${AWS_REGION}.amazonaws.com/$ECR_REPOSITORY:latest
+      - name: Render ECS task definition
+        id: render-task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: ecs/task-definition.json
+          container-name: ${{ env.CONTAINER_NAME }}
+          image: 587821825996.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY }}:${{ github.sha }}
 
-      - name: Push Docker image
-        run: |
-          docker push 587821825996.dkr.ecr.${AWS_REGION}.amazonaws.com/$ECR_REPOSITORY:latest
-
-      - name: Deploy ECS Service
-        run: |
-          aws ecs update-service \
-            --cluster $ECS_CLUSTER \
-            --service $ECS_SERVICE \
-            --force-new-deployment
+      - name: Deploy ECS task definition
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: ${{ steps.render-task-def.outputs.task-definition }}
+          cluster: ${{ env.ECS_CLUSTER }}
+          service: ${{ env.ECS_SERVICE }}
+          wait-for-service-stability: true

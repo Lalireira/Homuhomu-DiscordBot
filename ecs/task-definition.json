@@ -1,0 +1,23 @@
+{
+    "family": "homuhomu-discord-bot-task",
+    "networkMode": "awsvpc",
+    "requiresCompatibilities": ["FARGATE"],
+    "cpu": "256",
+    "memory": "2048",
+    "executionRoleArn": "arn:aws:iam::587821825996:role/ecsTaskExecutionRole",
+    "containerDefinitions": [
+      {
+        "name": "Homuhomu-discord-bot",
+        "image": "587821825996.dkr.ecr.ap-northeast-1.amazonaws.com/homuhomu-discord-bot:latest",
+        "essential": true,
+        "logConfiguration": {
+          "logDriver": "awslogs",
+          "options": {
+            "awslogs-group": "/ecs/Homuhomu-discord-bot",
+            "awslogs-region": "ap-northeast-1",
+            "awslogs-stream-prefix": "ecs"
+          }
+        }
+      }
+    ]
+  }
