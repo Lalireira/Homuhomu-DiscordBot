@@ -1,0 +1,60 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.pyc
+*.pyo
+*.pyd
+
+# 仮想環境
+venv/
+env/
+ENV/
+.venv/
+
+# 環境変数（本番では環境変数から取得）
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*.sublime-project
+*.sublime-workspace
+
+# OS
+.DS_Store
+Thumbs.db
+*.log
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# ドキュメント（本番では不要）
+documents/
+*.md
+!README.md
+
+# デプロイスクリプト
+deploy/
+
+# テスト
+tests/
+test_*.py
+*_test.py
+
+# その他
+.cursor/
+.cursorignore
