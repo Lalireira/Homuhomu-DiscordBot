@@ -521,3 +521,4 @@ def get_discord_token():
 - **API呼び出し**: 長時間かかる可能性があるため、`asyncio`を使用して非同期実行
 - **コマンド処理**: Discord Botのコマンドは全て`async/await`を使用
 - **デファー**: レスポンスに時間がかかる場合は`ctx.defer()`または`interaction.response.defer()`を使用
+- test
